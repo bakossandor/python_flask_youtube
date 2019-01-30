@@ -1,11 +1,13 @@
 from flask import Flask, request, render_template, redirect, url_for
 from flask_pymongo import PyMongo
-
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 
 app.config['MONGO_URI'] = "mongodb://localhost:27017/playlist_app"
+app.config['SECRET_KEY'] = 'secret!'
 mongo = PyMongo(app)
+socketio = SocketIO(app)
 
 
 @app.route('/<code>', methods=('GET', 'POST'))
@@ -30,3 +32,10 @@ def create():
     if request.method == 'POST':
         pass
     return render_template('index.html')
+
+
+@socketio.on('myevent')
+def handle_json(json):
+    print('received json: ' + str(json))
+
+

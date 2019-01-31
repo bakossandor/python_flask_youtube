@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/playlist.css') }}">
 </head>
 <body>
     <div>{{ code }}</div>
@@ -11,6 +12,21 @@
         <input type="button" id="submit_1" value="submit">
     </div>
     <div class="collector"></div>
+    <div class="play_list">
+        <div class="play_list_header">
+            <p>Add items to the playlist</p>
+        </div>
+        <div class="play_list_body">
+            <!--<div class="play_list_body_items">-->
+                <!--<div class="play_list_body_items_thumbnails">-->
+
+                <!--</div>-->
+                <!--<div class="play_list_body_items_title">-->
+                    <!--<span class="play_list_body_items_text">This is a title</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename = 'js/key.js') }}"></script>

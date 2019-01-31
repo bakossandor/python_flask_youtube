@@ -1,0 +1,14 @@
+/* paylist playlist */
+.play_list_body_items {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.play_list_body_items_thumbnails {
+    min-width: 70px;
+    min-height: 50px;
+    /*background-image: url("https://i.ytimg.com/vi/nkhpGC10OVw/default.jpg");*/
+    background-position: center;
+    margin-right: 10px;
+}

@@ -40,8 +40,9 @@ $(document).ready(function(){
             parent = $(this).parent()
             const id = parent.data("vid")
             const tnail = parent.data("thumbnail")
-            const title = parent.data("title")
+            const title = parent.data("title").replace(/_/g, " ")
             console.log(id, tnail, title)
+            socket.emit("add_to_track", {id, tnail, title})
         }
         data.items.forEach(function (objs) {
             const title = objs.snippet.title
@@ -52,7 +53,7 @@ $(document).ready(function(){
                 `<div
                     class="play_list_body_items"
                     data-vid=${video_id}
-                    data-title=${title}
+                    data-title=${title.replace(/\s/g, "_")}
                     data-thumbnail=${thumbnail}
                     >
                     <div
@@ -72,7 +73,7 @@ $(document).ready(function(){
         $(".play_list_body_items_add_button").click(add_to_playlist)
     }
 
-//    make a small table with add options to the playlist
+//    make a small table with add options to the playlist - hide option after successfull callback
 //    connect to the db - websocket - mongodb
 //    add the iframe
 //    add the functiolaties

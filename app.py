@@ -35,7 +35,11 @@ def create():
 
 
 @socketio.on('myevent')
-def handle_json(json):
+def init_connection(json):
     print('received json: ' + str(json))
 
+
+@socketio.on('add_to_track')
+def add_to_track(json):
+    print('received json: ' + str(json))
 

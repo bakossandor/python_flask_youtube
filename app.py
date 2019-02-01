@@ -14,7 +14,7 @@ socketio = SocketIO(app)
 def playlist(code):
     if request.method == 'POST':
         try:
-            insert = mongo.db.playlist.insert_one({"code": code})
+            insert = mongo.db.playlist.insert_one({"code": code, "list": []})
             return render_template('playlist.html', code=code)
         except:
             return "{message: 'cannot create the playlist'}"
@@ -40,6 +40,12 @@ def init_connection(json):
 
 
 @socketio.on('add_to_track')
-def add_to_track(json):
-    print('received json: ' + str(json))
+def add_to_track(data):
+    # print(data["ROOM"])
+    room = data["ROOM"]
+    vid_id = data["id"]
+    tnail = data["tnail"]
+    title = data["title"]
+    mongo.db.playlist.update({"code": room}, {"$push": {"list": {"vid_id": vid_id, "tnail": tnail, "title": title}}})
+
 

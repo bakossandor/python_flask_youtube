@@ -1,5 +1,8 @@
 $(document).ready(function(){
     // the script is ready
+
+    // the ROOM number and the API_KEY is loading from another script
+
     console.log("playlist is ready")
 
     // websocket connection
@@ -37,12 +40,14 @@ $(document).ready(function(){
         console.log(data)
         $(".play_list_body").empty()
         function add_to_playlist() {
+            // extract the data to send to the server
             parent = $(this).parent()
             const id = parent.data("vid")
             const tnail = parent.data("thumbnail")
-            const title = parent.data("title").replace(/_/g, " ")
-            console.log(id, tnail, title)
-            socket.emit("add_to_track", {id, tnail, title})
+            const title = parent.data("title").replace(/_/g, " ") // because storing concatenated strings we need to change the _ to " "
+
+            // sending the info back with websocket
+            socket.emit("add_to_track", {ROOM, id, tnail, title})
         }
         data.items.forEach(function (objs) {
             const title = objs.snippet.title
@@ -53,7 +58,7 @@ $(document).ready(function(){
                 `<div
                     class="play_list_body_items"
                     data-vid=${video_id}
-                    data-title=${title.replace(/\s/g, "_")}
+                    data-title=${title.replace(/\s/g, "_")} // cannot store longer than 1 word strings correctly in the data attr
                     data-thumbnail=${thumbnail}
                     >
                     <div

@@ -1,20 +1,29 @@
 $(document).ready(function(){
     // the script is ready
 
-    // the ROOM number and the API_KEY is loading from another script
+    // the ROOM number and the API_KEY is loading from another scripts
 
     console.log("playlist is ready")
 
     // websocket connection
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     socket.on('connect', function() {
-        socket.emit('myevent', {data: 'I\'m connected!'});
+        socket.emit('init_connect', {room: ROOM});
     });
+
+    socket.on("soundtrack", function(data) {
+        extract_soundtrack(data)
+    })
 
     // searching for item
     $("#submit_1").click(function(){
        req_from_youtube($("#test_1").val())
     })
+
+    // extracting soundtrack
+    function extract_soundtrack(data) {
+        console.log(JSON.parse(data))
+    }
 
     // ajax request to youtube api
     function req_from_youtube(wish) {
@@ -29,7 +38,7 @@ $(document).ready(function(){
                 'type': '',
                 "key": API_KEY
             },
-            dataType: "jsonp"
+        dataType: "jsonp"
         }).done(function(data) {
             extract_data(data)
         })
@@ -53,7 +62,6 @@ $(document).ready(function(){
             const title = objs.snippet.title
             const thumbnail = objs.snippet.thumbnails.default.url
             const video_id = objs.id.videoId
-            console.log(video_id)
             $(".play_list_body").append(
                 `<div
                     class="play_list_body_items"

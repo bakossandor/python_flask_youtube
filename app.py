@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 from flask_pymongo import PyMongo
 from flask_socketio import SocketIO
-
+import json
 app = Flask(__name__)
 
 app.config['MONGO_URI'] = "mongodb://localhost:27017/playlist_app"
@@ -34,18 +34,30 @@ def create():
     return render_template('index.html')
 
 
-@socketio.on('myevent')
-def init_connection(json):
-    print('received json: ' + str(json))
+@socketio.on('init_connect')
+def init_connection(data):
+    # retrieving the soundtrack of the room from db
+    res = mongo.db.playlist.find_one(
+        {"code": data["room"]}
+    )
+
+    # emitting back to the client the room soundtrack
+    socketio.emit("soundtrack", json.dumps(res["list"]))
 
 
 @socketio.on('add_to_track')
 def add_to_track(data):
-    # print(data["ROOM"])
     room = data["ROOM"]
     vid_id = data["id"]
     tnail = data["tnail"]
     title = data["title"]
-    mongo.db.playlist.update({"code": room}, {"$push": {"list": {"vid_id": vid_id, "tnail": tnail, "title": title}}})
 
-
+    # inserting elements to the database
+    mongo.db.playlist.update(
+        {"code": room},
+        {"$push":
+             {"list":
+                  {"vid_id": vid_id, "tnail": tnail, "title": title}
+              }
+         }
+    )

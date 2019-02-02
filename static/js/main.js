@@ -16,6 +16,11 @@ $(document).ready(function(){
         extract_soundtrack(data)
     })
 
+    // listening for deleted vid
+    socket.on("deleted_vid", function(vid_id) {
+        $(`.soundtrack_items[data-vid='${vid_id}']`).remove()
+    })
+
     // searching for item
     $("#submit_1").click(function(){
        req_from_youtube($("#test_1").val())
@@ -24,13 +29,16 @@ $(document).ready(function(){
     // extracting soundtrack
     function extract_soundtrack(data) {
         function move_up() {
-            console.log("up")
+            const vid_id = $(this).parent().data("vid")
+            socket.emit("change_pos", {room: ROOM, vid_id: vid_id, move: "-"})
         }
         function move_down() {
-            console.log("down")
+            const vid_id = $(this).parent().data("vid")
+            socket.emit("change_pos", {room: ROOM, vid_id: vid_id, move: "+"})
         }
         function del_vid() {
-            console.log("del")
+            const vid_id = $(this).parent().data("vid")
+            socket.emit("delete_vid", {room: ROOM, vid_id: vid_id})
         }
         tr = JSON.parse(data)
         tr.forEach(function(vid) {
@@ -130,8 +138,8 @@ $(document).ready(function(){
         $(".play_list_body_items_add_button").click(add_to_playlist)
     }
 
-//    make a small table with add options to the playlist - hide option after successfull callback
-//    connect to the db - websocket - mongodb
+//    soundrack items option
+//    hide soundtrack after deleted
 //    add the iframe
 //    add the functiolaties
 

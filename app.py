@@ -34,6 +34,7 @@ def create():
     return render_template('index.html')
 
 
+# init websocket connection
 @socketio.on('init_connect')
 def init_connection(data):
     # retrieving the soundtrack of the room from db
@@ -44,7 +45,7 @@ def init_connection(data):
     # emitting back to the client the room soundtrack
     socketio.emit("soundtrack", json.dumps(res["list"]))
 
-
+# add video to the room track
 @socketio.on('add_to_track')
 def add_to_track(data):
     room = data["ROOM"]
@@ -57,7 +58,30 @@ def add_to_track(data):
         {"code": room},
         {"$push":
              {"list":
-                  {"vid_id": vid_id, "tnail": tnail, "title": title}
+                  {"vid_id": vid_id, "tnail": tnail, "title": title, "score": 0}
               }
          }
     )
+
+
+# change video current positon
+@socketio.on('change_pos')
+def change_pos(data):
+    pass
+
+
+# delete video from playlist and db
+@socketio.on('delete_vid')
+def delete_vid(data):
+    room = data["room"]
+    vid_id = data["vid_id"]
+    mongo.db.playlist.update(
+        {"code": room},
+        {"$pull":
+             {"list":
+                  {"vid_id": vid_id}
+              }
+         }
+    )
+    socketio.emit("deleted_vid", vid_id, broadcast=True)
+

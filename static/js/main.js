@@ -11,6 +11,7 @@ $(document).ready(function(){
         socket.emit('init_connect', {room: ROOM});
     });
 
+    // listening to soundtracks
     socket.on("soundtrack", function(data) {
         extract_soundtrack(data)
     })
@@ -22,8 +23,51 @@ $(document).ready(function(){
 
     // extracting soundtrack
     function extract_soundtrack(data) {
-        console.log(JSON.parse(data))
+        function move_up() {
+            console.log("up")
+        }
+        function move_down() {
+            console.log("down")
+        }
+        function del_vid() {
+            console.log("del")
+        }
+        tr = JSON.parse(data)
+        tr.forEach(function(vid) {
+            const vid_id = vid.vid_id
+            const tnail = vid.tnail
+            const title = vid.title
+            $(".soundtrack_body").append(
+                `<div
+                    class="soundtrack_items"
+                    data-vid=${vid_id}
+                    >
+                        <div
+                            class="soundtrack_body_items_thumbnails"
+                            data style="background-image: url(${tnail})"
+                        ></div>
+                        <div class="soundtrack_body_items_title">
+                            <span class="soundtrack_items_text">${title}</span>
+                        </div>
+                        <div class="soundtrack_body_items_up">
+                            <input type="button" value="up">
+                        </div>
+                        <div class="soundtrack_body_items_down">
+                            <input type="button" value="down">
+                        </div>
+                        <div class="soundtrack_body_items_del">
+                            <input type="button" value="delete">
+                        </div>
+                    </div>
+                </div>`
+            )
+        })
+        $(".soundtrack_body_items_up").click(move_up)
+        $(".soundtrack_body_items_down").click(move_down)
+        $(".soundtrack_body_items_del").click(del_vid)
     }
+
+
 
     // ajax request to youtube api
     function req_from_youtube(wish) {
@@ -69,16 +113,16 @@ $(document).ready(function(){
                     data-title=${title.replace(/\s/g, "_")} // cannot store longer than 1 word strings correctly in the data attr
                     data-thumbnail=${thumbnail}
                     >
-                    <div
-                        class="play_list_body_items_thumbnails"
-                        data style="background-image: url(${thumbnail})"
-                    ></div>
-                    <div class="play_list_body_items_title">
-                        <span class="play_list_body_items_text">${title}</span>
-                    </div>
-                    <div class="play_list_body_items_add_button">
-                        <input type="button" value="add">
-                    </div>
+                        <div
+                            class="play_list_body_items_thumbnails"
+                            data style="background-image: url(${thumbnail})"
+                        ></div>
+                        <div class="play_list_body_items_title">
+                            <span class="play_list_body_items_text">${title}</span>
+                        </div>
+                        <div class="play_list_body_items_add_button">
+                            <input type="button" value="add">
+                        </div>
                     </div>
                 </div>`
             )

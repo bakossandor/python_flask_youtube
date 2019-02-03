@@ -8,7 +8,6 @@
 .play_list_body_items_thumbnails, .soundtrack_body_items_thumbnails {
     min-width: 70px;
     min-height: 50px;
-    /*background-image: url("https://i.ytimg.com/vi/nkhpGC10OVw/default.jpg");*/
     background-position: center;
     margin-right: 10px;
 }
@@ -21,7 +20,7 @@
     height: 0;
 }
 
-.iframe_container iframe {
+.iframe_container #player {
     position: absolute;
     top:0;
     left: 0;

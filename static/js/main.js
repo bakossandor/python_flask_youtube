@@ -5,8 +5,71 @@ $(document).ready(function(){
 
     console.log("playlist is ready")
 
+    // loading the iframe async
+    // This code loads the IFrame Player API code asynchronously.
+
+    function creating_iframe() {
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+          // This function creates an <iframe> (and YouTube player)
+          // after the API code downloads.
+        var player;
+        window.onYouTubeIframeAPIReady = function() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: get_first_vid_id(),
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        // The API calls this function when the player's state changes.
+        // The function indicates that when playing a video (state=1),
+        // the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                nextsong = next_song()
+                event.target.loadVideoById(nextsong)
+                delete_song()
+            }
+        }
+
+        function stopVideo() {
+            player.stopVideo();
+        }
+    }
+
+    // own custom functions to ytube api
+    // get vid id
+    function get_first_vid_id() {
+        vid_id = $(".soundtrack_items").first().data("vid")
+        return vid_id
+    }
+
+    function next_song() {
+        const nextsong = $(".soundtrack_items").eq(1).data("vid")
+        return nextsong
+    }
+
+    function delete_song() {
+        $(".soundtrack_items").first().remove()
+    }
     // websocket connection
     var socket = io.connect('http://' + document.domain + ':' + location.port);
+
     socket.on('connect', function() {
         socket.emit('init_connect', {room: ROOM});
     });
@@ -14,6 +77,7 @@ $(document).ready(function(){
     // listening to soundtracks
     socket.on("soundtrack", function(data) {
         extract_soundtrack(data)
+        creating_iframe()
     })
 
     // listening on new video on track
@@ -108,8 +172,6 @@ $(document).ready(function(){
         $(".soundtrack_body_items_del").click(del_vid)
     }
 
-
-
     // ajax request to youtube api
     function req_from_youtube(wish) {
         $.ajax({
@@ -171,7 +233,7 @@ $(document).ready(function(){
         $(".play_list_body_items_add_button").click(add_to_playlist)
     }
 
-//    add the iframe
+//    shit iframe - options
 //    add "state" change between vids and search list
 //    add the functiolaties
 

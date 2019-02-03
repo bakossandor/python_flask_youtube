@@ -171,8 +171,8 @@ $(document).ready(function(){
         $(".play_list_body_items_add_button").click(add_to_playlist)
     }
 
-//    soundrack items option
 //    add the iframe
+//    add "state" change between vids and search list
 //    add the functiolaties
 
 });

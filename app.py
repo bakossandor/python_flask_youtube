@@ -62,7 +62,7 @@ def add_to_track(data):
               }
          }
     )
-
+    socketio.emit("add_to_soundtrack", json.dumps({"vid_id": vid_id, "tnail": tnail, "title": title, "score": 0}), broadcast=True)
 
 # change video current positon
 @socketio.on('change_pos')

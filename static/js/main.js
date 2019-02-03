@@ -16,6 +16,39 @@ $(document).ready(function(){
         extract_soundtrack(data)
     })
 
+    // listening on new video on track
+    socket.on("add_to_soundtrack", function(data) {
+//        add_to_track(data)
+        v_data = JSON.parse(data)
+        const vid_id = v_data.vid_id
+        const tnail = v_data.tnail
+        const title = v_data.title
+        $(".soundtrack_body").append(
+            `<div
+                class="soundtrack_items"
+                data-vid=${vid_id}
+                >
+                    <div
+                        class="soundtrack_body_items_thumbnails"
+                        data style="background-image: url(${tnail})"
+                    ></div>
+                    <div class="soundtrack_body_items_title">
+                        <span class="soundtrack_items_text">${title}</span>
+                    </div>
+                    <div class="soundtrack_body_items_up">
+                        <input type="button" value="up">
+                    </div>
+                    <div class="soundtrack_body_items_down">
+                        <input type="button" value="down">
+                    </div>
+                    <div class="soundtrack_body_items_del">
+                        <input type="button" value="delete">
+                    </div>
+                </div>
+            </div>`
+        )
+    })
+
     // listening for deleted vid
     socket.on("deleted_vid", function(vid_id) {
         $(`.soundtrack_items[data-vid='${vid_id}']`).remove()
@@ -139,7 +172,6 @@ $(document).ready(function(){
     }
 
 //    soundrack items option
-//    hide soundtrack after deleted
 //    add the iframe
 //    add the functiolaties
 

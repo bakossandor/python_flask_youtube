@@ -43,7 +43,7 @@ $(document).ready(function(){
             if (event.data == YT.PlayerState.ENDED) {
                 nextsong = next_song()
                 event.target.loadVideoById(nextsong)
-                delete_song()
+                delete_song(get_first_vid_id())
             }
         }
 
@@ -64,9 +64,11 @@ $(document).ready(function(){
         return nextsong
     }
 
-    function delete_song() {
+    function delete_song(vid_id) {
+        socket.emit("delete_vid", {room: ROOM, vid_id: vid_id})
         $(".soundtrack_items").first().remove()
     }
+
     // websocket connection
     var socket = io.connect('http://' + document.domain + ':' + location.port);
 
@@ -209,32 +211,40 @@ $(document).ready(function(){
             const title = objs.snippet.title
             const thumbnail = objs.snippet.thumbnails.default.url
             const video_id = objs.id.videoId
-            $(".play_list_body").append(
-                `<div
-                    class="play_list_body_items"
-                    data-vid=${video_id}
-                    data-title=${title.replace(/\s/g, "_")} // cannot store longer than 1 word strings correctly in the data attr
-                    data-thumbnail=${thumbnail}
-                    >
-                        <div
-                            class="play_list_body_items_thumbnails"
-                            data style="background-image: url(${thumbnail})"
-                        ></div>
-                        <div class="play_list_body_items_title">
-                            <span class="play_list_body_items_text">${title}</span>
+            if (video_id) {
+                $(".play_list_body").append(
+                    `<div
+                        class="play_list_body_items"
+                        data-vid=${video_id}
+                        data-title=${title.replace(/\s/g, "_")} // cannot store longer than 1 word strings correctly in the data attr
+                        data-thumbnail=${thumbnail}
+                        >
+                            <div
+                                class="play_list_body_items_thumbnails"
+                                data style="background-image: url(${thumbnail})"
+                            ></div>
+                            <div class="play_list_body_items_title">
+                                <span class="play_list_body_items_text">${title}</span>
+                            </div>
+                            <div class="play_list_body_items_add_button">
+                                <input type="button" value="add">
+                            </div>
                         </div>
-                        <div class="play_list_body_items_add_button">
-                            <input type="button" value="add">
-                        </div>
-                    </div>
-                </div>`
-            )
+                    </div>`
+                )
+            }
         })
         $(".play_list_body_items_add_button").click(add_to_playlist)
     }
 
+
+//    when the video is finished delete from db
 //    shit iframe - options
 //    add "state" change between vids and search list
 //    add the functiolaties
+//    add css
+//    figuring out how to synronize
+//    clean pause option
+//    refactor
 
 });

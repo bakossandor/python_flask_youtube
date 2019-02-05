@@ -76,7 +76,7 @@ $(document).ready(function(){
         socket.emit('init_connect', {room: ROOM});
     });
 
-    // listening to soundtracks
+    // listening to soundtracks event - initiating the connection and creating the iframe
     socket.on("soundtrack", function(data) {
         extract_soundtrack(data)
         creating_iframe()
@@ -122,7 +122,14 @@ $(document).ready(function(){
 
     // searching for item
     $("#submit_1").click(function(){
-       req_from_youtube($("#test_1").val())
+       req_from_youtube($("#searchbar").val())
+    })
+
+    // input enter keypress
+    $("#searchbar").keypress(function(eve){
+        if(eve.which == 13) {
+            req_from_youtube($("#searchbar").val())
+        }
     })
 
     // extracting soundtrack
@@ -238,13 +245,12 @@ $(document).ready(function(){
     }
 
 
-//    when the video is finished delete from db
 //    shit iframe - options
 //    add "state" change between vids and search list
 //    add the functiolaties
 //    add css
 //    figuring out how to synronize
 //    clean pause option
-//    refactor
+//    refactor - front backend functions its like spagetti now
 
 });

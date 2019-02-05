@@ -6,33 +6,29 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/playlist.css') }}">
 </head>
 <body>
-    <div>{{ code }}</div>
-    <div class="test">
-        <input type="text" id="test_1">
-        <input type="button" id="submit_1" value="submit">
-    </div>
-    <div class="iframe_container">
-        <div id="player"></div>
-    </div>
-    <div class="soundtrack">
-        <div class="soundtrack_head">
-            <p2>vids</p2>
+    <div class="wrapper">
+        <header>
+            <div><h1>Video Party</h1></div>
+            <div><span>room - {{ code }}</span></div>
+        </header>
+        <div class="search">
+            <input type="text" id="searchbar">
+            <input type="button" id="submit_1" value="submit">
         </div>
-       <div class="soundtrack_body"></div>
-    </div>
-    <div class="play_list">
-        <div class="play_list_header">
-            <p>Add items to the playlist</p>
+        <div class="iframe_container">
+            <div id="player"></div>
         </div>
-        <div class="play_list_body">
-            <!--<div class="play_list_body_items">-->
-                <!--<div class="play_list_body_items_thumbnails">-->
-
-                <!--</div>-->
-                <!--<div class="play_list_body_items_title">-->
-                    <!--<span class="play_list_body_items_text">This is a title</span>-->
-                <!--</div>-->
-            <!--</div>-->
+        <div class="soundtrack">
+            <div class="soundtrack_head">
+                <p2>vids</p2>
+            </div>
+           <div class="soundtrack_body"></div>
+        </div>
+        <div class="play_list">
+            <div class="play_list_header">
+                <p>Add items to the playlist</p>
+            </div>
+            <div class="play_list_body"></div>
         </div>
     </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

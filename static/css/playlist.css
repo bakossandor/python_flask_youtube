@@ -1,3 +1,42 @@
+/* base */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+/* wrapper div */
+.wrapper {
+    width: 100%;
+    max-width: 750px;
+    margin: auto;
+    padding: 5px;
+}
+
+/* searchbar */
+.search {
+    margin-bottom: 1rem;
+}
+
+#searchbar {
+    width: 75%;
+}
+
+#submit_1 {
+    float: right;
+    width: 15%;
+}
+
 /* paylist playlist */
 .play_list_body_items, .soundtrack_items {
     display: flex;

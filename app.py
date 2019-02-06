@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 app.config['MONGO_URI'] = "mongodb://localhost:27017/playlist_app"
 app.config['SECRET_KEY'] = 'secret!'
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 mongo = PyMongo(app)
 socketio = SocketIO(app)
 

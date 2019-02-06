@@ -38,6 +38,18 @@ header {
 }
 
 /* paylist playlist */
+.playlist_wrapper {
+    position: relative;
+}
+
+.play_list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
+    z-index: 100;
+}
+
 .play_list_body_items, .soundtrack_items {
     display: flex;
     align-items: center;
